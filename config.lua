@@ -12,6 +12,7 @@ Config.Item = {
     i4 = {name = "stone", label = "Pierre"},
     i5 = {name = "diamond", label = "Diamand"},
 }
+Config.TresorMoney = {min = 100, max = 100000}
 Config.Tenu = {
     leger = {
         male = {

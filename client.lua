@@ -1,34 +1,34 @@
 ESX 				= nil
 local GUI 			= {}
-local onDiving 		= false
+local onDiving, startActivity = false, false
 local lastCapture 	= nil
 
-
 Citizen.CreateThread(function()
-  while ESX == nil do
-    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-    Citizen.Wait(0)
-  end
+ 	while ESX == nil do
+    	TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+    	Citizen.Wait(0)
+  	end
 end)
-
 function GetRecompense()
+	ESX.ShowNotification(Config.Notif.duringSearch.msg, Config.Notif.duringSearch.flash, Config.Notif.duringSearch.saveToBrief, Config.Notif.duringSearch.color)
+	FreezeEntityPosition(PlayerPedId(), true)
+	Citizen.Wait(Config.TimeToSearch)
 	local random = math.random(0,100)
-	if (random <= 1) then
-		TriggerServerEvent("esx_plongee:giveitem", "tresor")
+	if (random <= 1) then -- Chance 1 
+		TriggerServerEvent("esx_plongee:giveitem", Config.Item.i1.name, Config.Item.i1.label)
 	end
-	if (random > 1 and random <= 10) then
-		TriggerServerEvent("esx_plongee:giveitem", "gold")
+	if (random > 1 and random <= 10) then -- Chance 2
+		TriggerServerEvent("esx_plongee:giveitem", Config.Item.i2.name, Config.Item.i2.label)
 	end
-	if (random >= 11 and random <= 50) or (random >= 91 ) then
-		TriggerServerEvent("esx_plongee:giveitem", "fish")
+	if (random >= 11 and random <= 50) or (random >= 91 ) then -- Chance 3
+		TriggerServerEvent("esx_plongee:giveitem", Config.Item.i3.name, Config.Item.i3.label)
 	end
-	if (random >= 51 and random <= 80) then
-		TriggerServerEvent("esx_plongee:giveitem", "stone")
+	if (random >= 51 and random <= 80) then -- Chance 4
+		TriggerServerEvent("esx_plongee:giveitem", Config.Item.i4.name, Config.Item.i4.label)
 	end
-	if (random >= 81 and random <= 90) then
-		TriggerServerEvent("esx_plongee:giveitem", "diamond")
-	end	
-	--print("rR", random)
+	if (random >= 81 and random <= 90) then -- Chance 4 
+		TriggerServerEvent("esx_plongee:giveitem", Config.Item.i5.name, Config.Item.i5.label)
+	end
 end
 
 --[[_____TENU NO DELET PART_____]]--
@@ -37,125 +37,61 @@ if Config.deleteTenu == false then
 	RegisterNetEvent('esx_tenues:settenueplongees')
 	AddEventHandler('esx_tenues:settenueplongees', function()
 		if UseTenu then
-
 			TriggerEvent('skinchanger:getSkin', function(skin)
-
 				if skin.sex == 0 then
-					local clothesSkin = {
-						['tshirt_1'] = 15, ['tshirt_2'] = 0,
-						['ears_1'] = -1, ['ears_2'] = 0,
-						['torso_1'] = 15, ['torso_2'] = 0,
-						['decals_1'] = 0,  ['decals_2']= 0,
-						['mask_1'] = 36, ['mask_2'] = 0,
-						['arms'] = 15,
-						['pants_1'] = 16, ['pants_2'] = 0,
-						['shoes_1'] = 34, ['shoes_2'] = 0,
-						['helmet_1'] 	= 8, ['helmet_2'] = 0,
-						['bags_1'] = 43, ['bags_2'] = 0,
-						['glasses_1'] = 6, ['glasses_2'] = 0,
-						['chain_1'] = 0, ['chain_2'] = 0,
-						['bproof_1'] = 0,  ['bproof_2'] = 0
-					}
+					local clothesSkin = Config.Tenu.leger.male
 					TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 				else
-					local clothesSkin = {
-						['tshirt_1'] = 15, ['tshirt_2'] = 0,
-						['ears_1'] = -1, ['ears_2'] = 0,
-						['torso_1'] = 15, ['torso_2'] 	= 0,
-						['decals_1'] = 0,  ['decals_2'] = 0,
-						['mask_1'] = 36, ['mask_2'] 	= 0,
-						['arms'] = 15,
-						['pants_1'] = 15, ['pants_2'] 	= 0,
-						['shoes_1'] = 35, ['shoes_2'] 	= 0,
-						['helmet_1']= -1, ['helmet_2'] 	= 0,
-						['bags_1'] = 43, ['bags_2']	= 0,
-						['glasses_1'] = 5, ['glasses_2'] = 0,
-						['chain_1'] = 0, ['chain_2'] = 0,
-						['bproof_1'] = 0,  ['bproof_2'] = 0
-					}
+					local clothesSkin = Config.Tenu.leger.female
 					TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 				end
 				local myPed = PlayerPedId()
 				SetEnableScuba(myPed, true)
-				SetPedMaxTimeUnderwater(myPed, 400.00)
-				onDiving = true
+				SetPedMaxTimeUnderwater(myPed, Config.TimeDiving.leger)
+				onDiving, startActivity = true, true
+				StartActivity()
 			end)
 		else
-
 			TriggerEvent('skinchanger:getSkin', function(skin)
-
 				ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, hasSkin)
-
 					if hasSkin then
-
 						TriggerEvent('skinchanger:loadSkin', skin)
 						TriggerEvent('esx:restoreLoadout')
-						onDiving = false
+						onDiving, startActivity = false, false
+						StartActivity()
 					end
 				end)
 			end)
 		end
-
 		UseTenu  = not UseTenu
 		GUI.Time = GetGameTimer()
-
 	end)
 	------------- Best Diving suit
 	RegisterNetEvent('esx_tenues:settenueplongeel')
 	AddEventHandler('esx_tenues:settenueplongeel', function()
 		if UseTenu then
-
 			TriggerEvent('skinchanger:getSkin', function(skin)
-
 				if skin.sex == 0 then
-					local clothesSkin = {
-						['tshirt_1'] 	= 62, 	['tshirt_2'] 	= 1,
-						['torso_1'] 	= 67, 	['torso_2'] 	= 1,
-						['decals_1'] 	= 0,  	['decals_2'] 	= 0,
-						['mask_1'] 		= 46, 		['mask_2'] 	= 0,
-						['arms'] 		= 38,
-						['pants_1'] 	= 40, 	['pants_2'] 	= 1,
-						['shoes_1'] 	= 25, 	['shoes_2'] 	= 0,
-						['helmet_1'] 	= -1, 	['helmet_2'] 	= 0,
-						['bags_1'] 		= 44,		['bags_2'] 	= 0,
-						['chain_1'] 	= 0, 	['bproof_1']	= 0, 
-						['bracelets_1'] = -1, 	['watches_1'] 	= -1,
-						['glasses_1'] 	= 0, 	['ears_1'] 		= -1
-					}
+					local clothesSkin = Config.Tenu.lourd.male
 					TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 				else
-					local clothesSkin = {
-						['tshirt_1'] 	= 43, 	['tshirt_2'] 	= 1,
-						['torso_1'] 	= 61, 	['torso_2'] 	= 1,
-						['decals_1'] 	= 0,  	['decals_2'] 	= 0,
-						['mask_1'] 		= 46, 	['mask_2'] 	= 0,
-						['arms'] 		= 101,
-						['pants_1'] 	= 40, 	['pants_2'] 	= 1,
-						['shoes_1'] 	= 25, 	['shoes_2'] 	= 0,
-						['helmet_1']	= -1, 	['helmet_2'] 	= 0,
-						['bags_1'] 		= 44, 	['bags_2'] 	= 0,
-						['chain_1'] 	= 0, 	['bproof_1']	= 0, 
-						['bracelets_1'] = -1, 	['watches_1'] 	= -1,
-						['glasses_1'] 	= 5, 	['ears_1'] 		= -1
-					}
+					local clothesSkin = Config.Tenu.lourd.female
 					TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 				end
 				local myPed = PlayerPedId()
 				SetEnableScuba(myPed, true)
-				SetPedMaxTimeUnderwater(myPed, 1500.00)
-				onDiving = true
+				SetPedMaxTimeUnderwater(myPed, Config.TimeDiving.lourd)
+				onDiving, startActivity = true, true
+				StartActivity()
 			end)
 		else
-
 			TriggerEvent('skinchanger:getSkin', function(skin)
-
 				ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, hasSkin)
-
 					if hasSkin then
-
 						TriggerEvent('skinchanger:loadSkin', skin)
 						TriggerEvent('esx:restoreLoadout')
-						onDiving = false
+						onDiving, startActivity = false, false
+						StartActivity()
 					end
 				end)
 			end)
@@ -171,44 +107,17 @@ if Config.deleteTenu == true then
 	AddEventHandler('esx_tenues:settenueplongees', function()
 		TriggerEvent('skinchanger:getSkin', function(skin)
 			if skin.sex == 0 then
-				local clothesSkin = {
-					['tshirt_1'] = 15, ['tshirt_2'] = 0,
-					['ears_1'] = -1, ['ears_2'] = 0,
-					['torso_1'] = 15, ['torso_2'] = 0,
-					['decals_1'] = 0,  ['decals_2']= 0,
-					['mask_1'] = 36, ['mask_2'] = 0,
-					['arms'] = 15,
-					['pants_1'] = 16, ['pants_2'] = 0,
-					['shoes_1'] = 34, ['shoes_2'] = 0,
-					['helmet_1'] 	= 8, ['helmet_2'] = 0,
-					['bags_1'] = 43, ['bags_2'] = 0,
-					['glasses_1'] = 6, ['glasses_2'] = 0,
-					['chain_1'] = 0, ['chain_2'] = 0,
-					['bproof_1'] = 0,  ['bproof_2'] = 0
-				}
+				local clothesSkin = Config.Tenu.leger.male
 				TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 			else
-				local clothesSkin = {
-					['tshirt_1'] = 15, ['tshirt_2'] = 0,
-					['ears_1'] = -1, ['ears_2'] = 0,
-					['torso_1'] = 15, ['torso_2'] 	= 0,
-					['decals_1'] = 0,  ['decals_2'] = 0,
-					['mask_1'] = 36, ['mask_2'] 	= 0,
-					['arms'] = 15,
-					['pants_1'] = 15, ['pants_2'] 	= 0,
-					['shoes_1'] = 35, ['shoes_2'] 	= 0,
-					['helmet_1']= -1, ['helmet_2'] 	= 0,
-					['bags_1'] = 43, ['bags_2']	= 0,
-					['glasses_1'] = 5, ['glasses_2'] = 0,
-					['chain_1'] = 0, ['chain_2'] = 0,
-					['bproof_1'] = 0,  ['bproof_2'] = 0
-				}
+				local clothesSkin = Config.Tenu.leger.female
 				TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 			end
 			local myPed = PlayerPedId()
 			SetEnableScuba(myPed, true)
-			SetPedMaxTimeUnderwater(myPed, 400.00)
-			onDiving = true
+			SetPedMaxTimeUnderwater(myPed, Config.TimeDiving.leger)
+			onDiving, startActivity = true, true
+			StartActivity()
 		end)
 		GUI.Time = GetGameTimer()
 	end)
@@ -217,108 +126,78 @@ if Config.deleteTenu == true then
 	AddEventHandler('esx_tenues:settenueplongeel', function()
 		TriggerEvent('skinchanger:getSkin', function(skin)
 			if skin.sex == 0 then
-				local clothesSkin = {
-					['tshirt_1'] 	= 62, 	['tshirt_2'] 	= 1,
-					['torso_1'] 	= 67, 	['torso_2'] 	= 1,
-					['decals_1'] 	= 0,  	['decals_2'] 	= 0,
-					['mask_1'] 		= 46, 		['mask_2'] 	= 0,
-					['arms'] 		= 38,
-					['pants_1'] 	= 40, 	['pants_2'] 	= 1,
-					['shoes_1'] 	= 25, 	['shoes_2'] 	= 0,
-					['helmet_1'] 	= -1, 	['helmet_2'] 	= 0,
-					['bags_1'] 		= 44,		['bags_2'] 	= 0,
-					['chain_1'] 	= 0, 	['bproof_1']	= 0, 
-					['bracelets_1'] = -1, 	['watches_1'] 	= -1,
-					['glasses_1'] 	= 0, 	['ears_1'] 		= -1
-				}
+				local clothesSkin = Config.Tenu.lourd.male
 				TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 			else
-				local clothesSkin = {
-					['tshirt_1'] 	= 43, 	['tshirt_2'] 	= 1,
-					['torso_1'] 	= 61, 	['torso_2'] 	= 1,
-					['decals_1'] 	= 0,  	['decals_2'] 	= 0,
-					['mask_1'] 		= 46, 	['mask_2'] 	= 0,
-					['arms'] 		= 101,
-					['pants_1'] 	= 40, 	['pants_2'] 	= 1,
-					['shoes_1'] 	= 25, 	['shoes_2'] 	= 0,
-					['helmet_1']	= -1, 	['helmet_2'] 	= 0,
-					['bags_1'] 		= 44, 	['bags_2'] 	= 0,
-					['chain_1'] 	= 0, 	['bproof_1']	= 0, 
-					['bracelets_1'] = -1, 	['watches_1'] 	= -1,
-					['glasses_1'] 	= 5, 	['ears_1'] 		= -1
-				}
+				local clothesSkin = Config.Tenu.lourd.female
 				TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
 			end
 			local myPed = PlayerPedId()
 			SetEnableScuba(myPed, true)
-			SetPedMaxTimeUnderwater(myPed, 1500.00)
-			onDiving = true
+			SetPedMaxTimeUnderwater(myPed, Config.TimeDiving.lourd)
+			onDiving, startActivity = true, true
+			StartActivity()
 		end)
 		GUI.Time = GetGameTimer()
 	end)
 	RegisterNetEvent('esx_tenues:settenueorigin')
 	AddEventHandler('esx_tenues:settenueorigin', function()
-
 		ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, hasSkin)
-
 			if hasSkin then
-
 				TriggerEvent('skinchanger:loadSkin', skin)
 				TriggerEvent('esx:restoreLoadout')
-				onDiving = false
+				onDiving, startActivity = false, false
+				StartActivity()
 			end
 		end)
 		GUI.Time = GetGameTimer()
 	end)
 end
 
-
-Citizen.CreateThread(function ()
-	while true do
-		Citizen.Wait(0)
-		local myPed = PlayerPedId()
-		--print(onDiving)
-		--print(lastCapture)
-		if (onDiving and IsPedSwimmingUnderWater(myPed)) then
-			local coords = GetEntityCoords(myPed)
-			if coords.z < -7 then
-				--print (coords)
-				if lastCapture ~= nil then
-					if GetDistanceBetweenCoords(lastCapture, coords, true) > 75 then
-						ESX.ShowHelpNotification("Appuyez sur~g~ ~INPUT_CONTEXT~ ~w~pour ~y~fouille")
-						--local randomTimer = math.random(300,700)
-						--print("after")
-						if IsControlPressed(0, 38) and (GetGameTimer() - GUI.Time) > 400 then
-							lastCapture = coords
-							local random = math.random(0,100)
-							if (random >= 0 and random <= 70 )then
-								ESX.ShowNotification("~g~Vous avez trouvé quelque chose....")
-								GetRecompense()
-							else
-								ESX.ShowNotification("~r~Vous n\'avez rien trouvé...")
+function StartActivity()
+	if startActivity then
+		Citizen.CreateThread(function ()
+			while startActivity do
+				Citizen.Wait(0)
+				local myPed = PlayerPedId()
+				if (onDiving and IsPedSwimmingUnderWater(myPed)) then
+					local coords = GetEntityCoords(myPed)
+					if coords.z < -7 then
+						if lastCapture ~= nil then
+							if GetDistanceBetweenCoords(lastCapture, coords, true) > 75 then
+								ESX.ShowHelpNotification(Config.Notif.search.msg, Config.Notif.search.thisFrame, Config.Notif.search.beep, Config.Notif.search.duration)
+								if IsControlPressed(0, 38) and (GetGameTimer() - GUI.Time) > 400 then
+									lastCapture = coords
+									local random = math.random(0,100)
+									if (random >= 0 and random <= 70 )then
+										GetRecompense()
+										FreezeEntityPosition(PlayerPedId(), false)
+									else
+										ESX.ShowNotification(Config.Notif.noFound.msg, Config.Notif.noFound.flash, Config.Notif.noFound.saveToBrief, Config.Notif.noFound.color)
+									end
+									GUI.Time = GetGameTimer()
+								end
 							end
-							--print("rS", random)
-							GUI.Time = GetGameTimer()
-						end
-					end
-				else
-					--print("init")
-					--local randomTimer = math.random(300,700)
-					ESX.ShowHelpNotification("Appuyez sur~g~ ~INPUT_CONTEXT~ ~w~pour ~y~fouiller")
-					if IsControlPressed(0, 38) and (GetGameTimer() - GUI.Time > 300) then
-						lastCapture = coords
-						local random = math.random(0,100)
-						if (random >= 0 and random <= 70 )then
-							ESX.ShowNotification("~g~Vous avez trouvé quelque chose....")
-							GetRecompense()
 						else
-							ESX.ShowNotification("~r~Vous n\'avez rien trouvé...")
+							ESX.ShowHelpNotification(Config.Notif.search.msg, Config.Notif.search.thisFrame, Config.Notif.search.beep, Config.Notif.search.duration)
+							if IsControlPressed(0, 38) and (GetGameTimer() - GUI.Time > 300) then
+								lastCapture = coords
+								local random = math.random(0,100)
+								if (random >= 0 and random <= 70 )then
+									GetRecompense()
+									FreezeEntityPosition(PlayerPedId(), false)
+								else
+									ESX.ShowNotification(Config.Notif.noFound.msg, Config.Notif.noFound.flash, Config.Notif.noFound.saveToBrief, Config.Notif.noFound.color)
+								end
+								GUI.Time = GetGameTimer()
+							end
 						end
-						--print("ra", random)
-						GUI.Time = GetGameTimer()
 					end
 				end
 			end
-		end
+		end)
+	else
+		startActivity = false
+		return
 	end
-end)
+end

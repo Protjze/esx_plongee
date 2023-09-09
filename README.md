@@ -58,8 +58,8 @@ pour le shop resources/[ox]/ox_inventory/data/shops.lua
 			id = 729, colour = 5, scale = 0.8
 		}, inventory = {
 
-   { name = 'plongee1', price = 150 },
-			{ name = 'plongee2', price = 150 }
+   		{ name = 'plongee1', price = 150 },
+		{ name = 'plongee2', price = 150 }
 			
 		}, locations = {
 			vec3(-1161.0350, -2022.5441, 13.1640)

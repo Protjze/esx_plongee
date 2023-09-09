@@ -1,14 +1,10 @@
-ESX 				= nil
+ESX = exports["es_extended"]:getSharedObject()
+
 local GUI 			= {}
 local onDiving, startActivity = false, false
 local lastCapture 	= nil
 
-Citizen.CreateThread(function()
- 	while ESX == nil do
-    	TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-    	Citizen.Wait(0)
-  	end
-end)
+
 function GetRecompense()
 	ESX.ShowNotification(Config.Notif.duringSearch.msg, Config.Notif.duringSearch.flash, Config.Notif.duringSearch.saveToBrief, Config.Notif.duringSearch.color)
 	FreezeEntityPosition(PlayerPedId(), true)

@@ -16,6 +16,8 @@ client_scripts {
 	'client.lua'
 }
 
+shared_script '@es_extended/imports.lua'
+
 --[[_______________________INTERDIT A LA REVENTE_______________________]]--
 
 --[[					__SUP2Ak__                            

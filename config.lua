@@ -59,7 +59,7 @@ Config.Tenu = {
             ['bags_1'] 		= 44,	['bags_2'] 	= 0,
             ['chain_1'] 	= 0, 	['bproof_1']	= 0, 
             ['bracelets_1'] = -1, 	['watches_1'] 	= -1,
-            ['glasses_1'] 	= 26, 	['ears_1'] 		= -1
+            ['glasses_1'] 	= 26, 	['ears_1'] 		= 0
         },
         female = {
             ['tshirt_1'] 	= 14, 	['tshirt_2'] 	= 0,
@@ -73,7 +73,7 @@ Config.Tenu = {
             ['bags_1'] 		= 44, 	['bags_2'] 	= 0,
             ['chain_1'] 	= 0, 	['bproof_1']	= 0, 
             ['bracelets_1'] = -1, 	['watches_1'] 	= -1,
-            ['glasses_1'] 	= 28, 	['ears_1'] 		= -1 
+            ['glasses_1'] 	= 28, 	['ears_1'] 		= 0
         }
     }
 }

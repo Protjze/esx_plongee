@@ -1,7 +1,7 @@
 # esx_diving
 
-Créator: **@Nelyo#1462** and **@SUP2Ak#3755**
-Contributor: **[gomisloca](https://github.com/gomisloca)** (Compatibility esx-legacy v1.10.1 + support ox_inventory)
+- Créator: **@Nelyo#1462** and **@SUP2Ak#3755**
+- Contributor: **[gomisloca](https://github.com/gomisloca)** (Compatibility esx-legacy v1.10.1 + support ox_inventory)
 
 # How to:
  - Import the SQL file for create both item and add them to shop

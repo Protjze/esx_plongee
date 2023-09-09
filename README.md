@@ -20,6 +20,60 @@ SetPedMaxTimeUnderwater(PlayerPedId(), **1500.00**)
 # What next?
 Fill free to update the script but don't forget to share or update this repository also.
 
+pour ox invetory item resources/[ox]/ox_inventory/data/items.lua
+
+["plongee1"] = {
+	label = "Tenue de plongée legere",
+	weight = 1000,
+	stack = true,
+	close = true,
+},
+
+["plongee2"] = {
+	label = "Tenue de plongée lourde",
+	weight = 4000,
+	stack = true,
+	close = true,
+},
+
+["tenu_origin"] = {
+	label = "Remettre tenue origine",
+	weight = 4000,
+	stack = true,
+	close = true,
+},
+
+["tresor"] = {
+	label = "Trésor",
+	weight = 4000,
+	stack = true,
+	close = true,
+},
+
+pour le shop resources/[ox]/ox_inventory/data/shops.lua
+
+Plongee = {
+	name = 'Plongee',
+	blip = {
+		id = 729, colour = 5, scale = 0.8
+	}, inventory = {
+
+	{ name = 'plongee1', price = 150 },
+	{ name = 'plongee2', price = 150 }
+		
+	}, locations = {
+		vec3(-1161.0350, -2022.5441, 13.1640)
+		
+	}, targets = {
+		{
+            ped = 's_f_y_hooker_02',
+            scenario = 'WORLD_HUMAN_HANG_OUT_STREET_CLUBHOUSE',
+            loc = vec3(-1161.0350, -2022.5441, 13.1640),
+            heading = 316.8271,
+        },
+	}
+ },
+
 Have Fun!
 
 ```

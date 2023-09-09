@@ -1,5 +1,5 @@
-ESX = nil
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+ESX = exports["es_extended"]:getSharedObject()
+
 ESX.RegisterUsableItem('tresor', function(source)
     local _source       = source
     local xPlayer       = ESX.GetPlayerFromId(_source)
